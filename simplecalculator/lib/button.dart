@@ -18,7 +18,7 @@ class CalcButton extends StatelessWidget {
           style: GoogleFonts.openSans(
               textStyle: TextStyle(
             color: fontColor != null ? Color(fontColor) : Colors.white,
-            fontSize: 20.0,
+            fontSize: 25.0,
           )),
         ),
         style: ElevatedButton.styleFrom(
