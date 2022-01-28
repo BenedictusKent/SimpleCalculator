@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplecalculator/button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,6 +36,29 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(right: 10),
+            alignment: Alignment(1, 1),
+            child: Text(
+              "123*123",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(fontSize: 20),
+                color: Colors.grey[600],
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            alignment: Alignment(1, 1),
+            child: Text(
+              "123",
+              style: GoogleFonts.openSans(
+                textStyle: TextStyle(fontSize: 70),
+                color: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
           // First row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
