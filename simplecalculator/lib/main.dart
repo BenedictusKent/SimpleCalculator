@@ -1,36 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:simplecalculator/button.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
+
+final currentNumberProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
+final historyNumberProvider = StateProvider<String>((ref) {
+  return '';
+});
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Calculator',
+      home: CalcApp(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class CalcApp extends ConsumerWidget {
+  static List<String> numberList = [];
   final int colorBlack = 0xFF000000;
   final int colorGrey = 0xFFE0E0E0;
   final int colorOrange = 0xFFFFA726;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final currentNumber = watch(currentNumberProvider).state;
+    final historyNumber = watch(historyNumberProvider).state;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Column(
@@ -40,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.only(right: 10),
             alignment: Alignment(1, 1),
             child: Text(
-              "123*123",
+              historyNumber.toString(),
               style: GoogleFonts.openSans(
                 textStyle: TextStyle(fontSize: 20),
                 color: Colors.grey[600],
@@ -48,10 +53,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
             alignment: Alignment(1, 1),
             child: Text(
-              "123",
+              currentNumber.toString(),
               style: GoogleFonts.openSans(
                 textStyle: TextStyle(fontSize: 70),
                 color: Colors.white,
