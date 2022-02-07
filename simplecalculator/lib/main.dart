@@ -7,8 +7,8 @@ void main() {
   runApp(ProviderScope(child: MyApp()));
 }
 
-final currentNumberProvider = StateProvider<int>((ref) {
-  return 0;
+final currentNumberProvider = StateProvider<String>((ref) {
+  return '0';
 });
 
 final historyNumberProvider = StateProvider<String>((ref) {
@@ -26,7 +26,10 @@ class MyApp extends StatelessWidget {
 }
 
 class CalcApp extends ConsumerWidget {
-  static List<String> numberList = [];
+  static var arrayNum = [];
+  static var arrayOps = [];
+  static int firstNum = 0;
+  static int operator = 0;
   final int colorBlack = 0xFF000000;
   final int colorGrey = 0xFFE0E0E0;
   final int colorOrange = 0xFFFFA726;
@@ -55,11 +58,14 @@ class CalcApp extends ConsumerWidget {
           Container(
             padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
             alignment: Alignment(1, 1),
-            child: Text(
-              currentNumber.toString(),
-              style: GoogleFonts.openSans(
-                textStyle: TextStyle(fontSize: 70),
-                color: Colors.white,
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                currentNumber.toString(),
+                style: GoogleFonts.openSans(
+                  textStyle: TextStyle(fontSize: 70),
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
