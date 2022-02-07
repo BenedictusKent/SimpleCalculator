@@ -26,10 +26,8 @@ class MyApp extends StatelessWidget {
 }
 
 class CalcApp extends ConsumerWidget {
-  static var arrayNum = [];
-  static var arrayOps = [];
-  static int firstNum = 0;
   static int operator = 0;
+  static int reset = 0;
   final int colorBlack = 0xFF000000;
   final int colorGrey = 0xFFE0E0E0;
   final int colorOrange = 0xFFFFA726;
