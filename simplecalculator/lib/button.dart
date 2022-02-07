@@ -24,6 +24,18 @@ class CalcButton extends StatelessWidget {
     return historyText;
   }
 
+  String historyWriter(String current, int minus, int ops) {
+    // add parentheses if there is minus
+    String history = '';
+    if (minus == -1) {
+      history += '(';
+      history += current;
+      history += ')';
+      CalcApp.minus = 1;
+    } else if (ops == 0) history += current;
+    return history;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,33 +71,23 @@ class CalcButton extends StatelessWidget {
           } else if (text == 'x') {
           } else if (text == '+') {
             // write currentNumber to historyNumber
-            if (CalcApp.minus == -1) {
-              context.read(historyNumberProvider).state += '(';
-              context.read(historyNumberProvider).state +=
-                  context.read(currentNumberProvider).state;
-              context.read(historyNumberProvider).state += ')';
-              CalcApp.minus = 1;
-            } else if (CalcApp.operator == 0)
-              context.read(historyNumberProvider).state +=
-                  context.read(currentNumberProvider).state;
+            String temp;
+            temp = historyWriter(context.read(currentNumberProvider).state,
+                CalcApp.minus, CalcApp.operator);
+            context.read(historyNumberProvider).state += temp;
             // write operation
-            String temp = context.read(historyNumberProvider).state;
+            temp = context.read(historyNumberProvider).state;
             temp = operationWriter(CalcApp.operator, text, temp);
             context.read(historyNumberProvider).state = temp;
             CalcApp.operator = 1;
           } else if (text == '-') {
             // write currentNumber to historyNumber
-            if (CalcApp.minus == -1) {
-              context.read(historyNumberProvider).state += '(';
-              context.read(historyNumberProvider).state +=
-                  context.read(currentNumberProvider).state;
-              context.read(historyNumberProvider).state += ')';
-              CalcApp.minus = 1;
-            } else if (CalcApp.operator == 0)
-              context.read(historyNumberProvider).state +=
-                  context.read(currentNumberProvider).state;
+            String temp;
+            temp = historyWriter(context.read(currentNumberProvider).state,
+                CalcApp.minus, CalcApp.operator);
+            context.read(historyNumberProvider).state += temp;
             // write operation
-            String temp = context.read(historyNumberProvider).state;
+            temp = context.read(historyNumberProvider).state;
             temp = operationWriter(CalcApp.operator, text, temp);
             context.read(historyNumberProvider).state = temp;
             CalcApp.operator = 2;
