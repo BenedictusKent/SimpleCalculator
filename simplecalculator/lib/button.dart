@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:simplecalculator/main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:function_tree/function_tree.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CalcButton extends StatelessWidget {
   final String text;
@@ -130,6 +132,12 @@ class CalcButton extends StatelessWidget {
                 context.read(currentNumberProvider).state += text;
                 // context.read(historyNumberProvider).state += text;
               }
+            } else {
+              Fluttertoast.showToast(
+                msg: 'Max 10 numbers!',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+              );
             }
           }
         },
