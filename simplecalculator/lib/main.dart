@@ -108,7 +108,7 @@ class CalcApp extends ConsumerWidget {
                 text: "9",
               ),
               CalcButton(
-                text: "x",
+                text: "*",
                 buttonColor: colorOrange,
               ),
             ],
