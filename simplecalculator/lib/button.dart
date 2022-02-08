@@ -38,6 +38,23 @@ class CalcButton extends StatelessWidget {
     return history;
   }
 
+  String opsFunc(
+      String buttonText, String current, String history, int minus, int ops) {
+    // write currentNumber to historyNumber
+    String temp, tempHistory;
+    tempHistory = history;
+    temp = historyWriter(current, minus, ops);
+    tempHistory += temp;
+    // write operation
+    temp = tempHistory;
+    temp = operationWriter(ops, buttonText, temp);
+    tempHistory = temp;
+    if (buttonText == '+')
+      CalcApp.operator = 1;
+    else if (buttonText == '-') CalcApp.operator = 2;
+    return tempHistory;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,35 +81,33 @@ class CalcButton extends StatelessWidget {
             context.read(currentNumberProvider).state = '0';
             context.read(historyNumberProvider).state = '';
           } else if (text == '+/-') {
-            int temp = int.parse(context.read(currentNumberProvider).state);
+            var temp;
+            if (context.read(currentNumberProvider).state.contains('.'))
+              temp = double.parse(context.read(currentNumberProvider).state);
+            else
+              temp = int.parse(context.read(currentNumberProvider).state);
             temp *= -1;
             CalcApp.minus *= -1;
             context.read(currentNumberProvider).state = temp.toString();
+          } else if (text == '.') {
+            context.read(currentNumberProvider).state += text;
           } else if (text == '%') {
+          } else if (text == '+') {
+            context.read(historyNumberProvider).state = opsFunc(
+                text,
+                context.read(currentNumberProvider).state,
+                context.read(historyNumberProvider).state,
+                CalcApp.minus,
+                CalcApp.operator);
+          } else if (text == '-') {
+            context.read(historyNumberProvider).state = opsFunc(
+                text,
+                context.read(currentNumberProvider).state,
+                context.read(historyNumberProvider).state,
+                CalcApp.minus,
+                CalcApp.operator);
           } else if (text == '/') {
           } else if (text == 'x') {
-          } else if (text == '+') {
-            // write currentNumber to historyNumber
-            String temp;
-            temp = historyWriter(context.read(currentNumberProvider).state,
-                CalcApp.minus, CalcApp.operator);
-            context.read(historyNumberProvider).state += temp;
-            // write operation
-            temp = context.read(historyNumberProvider).state;
-            temp = operationWriter(CalcApp.operator, text, temp);
-            context.read(historyNumberProvider).state = temp;
-            CalcApp.operator = 1;
-          } else if (text == '-') {
-            // write currentNumber to historyNumber
-            String temp;
-            temp = historyWriter(context.read(currentNumberProvider).state,
-                CalcApp.minus, CalcApp.operator);
-            context.read(historyNumberProvider).state += temp;
-            // write operation
-            temp = context.read(historyNumberProvider).state;
-            temp = operationWriter(CalcApp.operator, text, temp);
-            context.read(historyNumberProvider).state = temp;
-            CalcApp.operator = 2;
           } else if (text == '=') {
             // put parentheses if there is minus number
             if (CalcApp.minus == -1) {
@@ -109,8 +124,16 @@ class CalcButton extends StatelessWidget {
                 .state
                 .interpret()
                 .toString();
-            int result = int.parse(temp.substring(0, temp.length - 2));
-            context.read(currentNumberProvider).state = result.toString();
+            String result;
+            if (temp.substring(temp.length - 2) == '.0') {
+              result =
+                  (int.parse(temp.substring(0, temp.length - 2))).toString();
+              if (result.length > 15)
+                result = (int.parse(temp.substring(0, temp.length - 2)))
+                    .toStringAsFixed(3);
+            } else
+              result = (double.parse(temp)).toStringAsFixed(3);
+            context.read(currentNumberProvider).state = result;
             context.read(historyNumberProvider).state = '';
             CalcApp.reset = 1;
           } else {
@@ -124,14 +147,10 @@ class CalcButton extends StatelessWidget {
             // take max 10 int
             if (context.read(currentNumberProvider).state.length < 10) {
               if (context.read(currentNumberProvider).state == '0') {
-                if (text != '0' && text != '00') {
+                if (text != '0' && text != '00')
                   context.read(currentNumberProvider).state = text;
-                  // context.read(historyNumberProvider).state += text;
-                }
-              } else {
+              } else
                 context.read(currentNumberProvider).state += text;
-                // context.read(historyNumberProvider).state += text;
-              }
             } else {
               Fluttertoast.showToast(
                 msg: 'Max 10 numbers!',
