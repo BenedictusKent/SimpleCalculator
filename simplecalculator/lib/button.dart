@@ -94,7 +94,8 @@ class CalcButton extends StatelessWidget {
             CalcApp.minus *= -1;
             context.read(currentNumberProvider).state = temp.toString();
           } else if (text == '.') {
-            context.read(currentNumberProvider).state += text;
+            if (!context.read(currentNumberProvider).state.contains('.'))
+              context.read(currentNumberProvider).state += text;
           } else if (text == '%') {
             double num =
                 double.parse(context.read(currentNumberProvider).state);
